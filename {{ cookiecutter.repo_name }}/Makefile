@@ -51,7 +51,10 @@ endif
 
 ## Set up python interpreter environment
 create_environment:
+	@echo ">>> Installing virtual environment if not already installed.":
 	python3 -m venv venv
+	@bash -c "mkdir -p hedwig/dags/test"
+	@bash -c "touch hedwig/dags/test/test_dag.py"
 	@echo ">>> Installing virtual environment if not already installed."
 	@echo ">>> New virtualenv created. Activate with:venv/bin/activate"
 
