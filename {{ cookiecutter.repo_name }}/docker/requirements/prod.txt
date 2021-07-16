@@ -1,0 +1,10 @@
+-r base.txt
+awscli~=1.18.39
+authlib==0.15.4
+
+# TODO: Debug why this is necessary, seems like a missing requirement
+# on some other package
+email-validator==1.0.5
+
+# All requirements that are production env only, go here.
+# It should be extremely rare that something goes here

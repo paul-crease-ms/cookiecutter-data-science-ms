@@ -1,0 +1,29 @@
+{
+    "churn_prediction_cfg": {
+        "database": "MY_DB",
+        "schema": "DL_CHURN_PREDICTION",
+        "instance_type": "ml.c4.4xlarge",
+        "role": "arn:aws:iam::016521632897:role/service-role-sagemaker",
+        "instance_count": "1",
+        "bucket_name": "marleyspoon-data-sagemaker-staging",
+        "storage_integration_name": "EXTERNAL_DATA_STAGING_SI",
+        "raw_data_table": "churn_base_final_v2",
+        "prediction_table": "weekly_predictions_v2",
+        "external_data_schema": "EXTERNAL_DATA",
+        "control_data_table": "churn_control_group"
+    },
+    "iterable_api_keys": {
+        "au_dn": "1234",
+        "us_dn": "abc1234",
+        "at_ms": "abc1234",
+        "au_ms": "abc1234",
+        "be_ms": "abc1234",
+        "de_ms": "abc1234",
+        "nl_ms": "abc1234",
+        "us_ms": "abc1234",
+        "se_ms": "abc1234",
+        "dk_ms": "abc1234"
+    },
+    "conn_id": "snowflake_connection",
+    "conn_type": "Snowflake"
+}

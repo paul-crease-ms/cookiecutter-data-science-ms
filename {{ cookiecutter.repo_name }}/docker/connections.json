@@ -1,0 +1,11 @@
+{
+    "snowflake_connection": {
+      "conn_type": "snowflake",
+      "description": "snowflake connection for churn prediction" ,
+      "host": "ms028302.eu-west-1.snowflakecomputing.com",
+      "login": "USERNAME",
+      "password": "PASSWORD",
+      "schema": "db-schema",
+      "extra": "{\"extra__snowflake__account\": \"ms028302\", \"extra__snowflake__aws_access_key_id\": \"\", \"extra__snowflake__aws_secret_access_key\": \"\", \"extra__snowflake__database\": \"PAUL_CREASE_DB\", \"extra__snowflake__region\": \"eu-west-1\", \"extra__snowflake__warehouse\": \"MY_WH\"}"
+    }
+  }

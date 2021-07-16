@@ -1,10 +1,21 @@
-.PHONY: clean data lint requirements create_environment sync_data_to_s3 sync_data_from_s3
+.PHONY: login clean data lint requirements create_environment sync_data_to_s3 sync_data_from_s3
 
 #################################################################################
 # GLOBALS                                                                       #
 #################################################################################
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+MAKEFILE_PATH        := $(abspath $(lastword $(MAKEFILE_LIST)))
+AWS_ACCOUNT_ID       := 050665733583
+AWS_REGION           := eu-west-1
+IMAGE_NAME           := ${PROJECT_DIR}
+CONTAINER_REPOSITORY := ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}
+COMMIT_HASH          := $$(git rev-parse HEAD)
+DATETIME             := $$(date +%Y%m%d_%H%M)
+GIT_BRANCH           := $(shell git rev-parse --abbrev-ref HEAD)
+GIT_TAG              := $(shell git name-rev --tags --name-only --refs 'v*' ${COMMIT_HASH} | sed 's/\^0$$//g')
+PYTHON_BASE          := $(shell cat docker/airflow-base/Dockerfile | grep FROM | awk -F: '{print $$2}')
+TAGS                 := ${COMMIT_HASH} ${DATETIME} ${PYTHON_BASE} ${GIT_BRANCH}
 BUCKET = {{ cookiecutter.s3_bucket }}
 PROFILE = {{ cookiecutter.aws_profile }}
 PROJECT_NAME = {{ cookiecutter.repo_name }}
@@ -14,6 +25,14 @@ PYTHON_INTERPRETER = {{ cookiecutter.python_interpreter }}
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
+login:
+	@aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${CONTAINER_REPOSITORY}
+
+setup_hedwig:
+	docker-compose -f docker-compose.local.yml build
+	docker-compose -f docker-compose.local.yml up -d metadata
+	docker-compose -f docker-compose.local.yml run webserver airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@admin.com --password admin
+	docker-compose -f docker-compose.local.yml up -d webserver
 
 ## Install Python Dependencies
 requirements: test_environment
